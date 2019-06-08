@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: App.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: App.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { Component } from 'react'
+import * as BooksAPI from './BooksAPI'
+import './App.css'
+
+import BookShelf from './BookShelf.js'
+import ListBooks from './ListBooks.js'
+
+import LoadingOverlay from 'react-loading-overlay'
+import { ClipLoader } from 'react-spinners'
+
+import { Link } from 'react-router-dom'
+import { Route } from 'react-router-dom'
+
+/**
+ * const shelf - This doesn't change.
+ * This constant should suffice to display shelf types.
+ */
+const shelf = [
+  { value: 'currentlyReading', name: 'Currently Reading' },
+  { value: 'wantToRead', name: 'Want to Read' },
+  { value: 'read', name: 'Read' }
+];
+
+/**
+ * @description Parent component, to have books per categories
+ */
+class BooksApp extends Component {
+
+  state = {
+    books: [], // All the book items should be in here.
+    loading: false,
+  }
+
+  componentDidMount() {
+    BooksAPI.getAll()
+      .then((books) => {
+        this.setState(() => ({
+          books
+      }))
+    })
+  }
+
+  /**
+   * @description Updates the Bookshelf, below are the two rules -
+   *              &lt;br>- Updated a book's category if the book is present in the bookshelf
+   *              &lt;br>- Adds a book to the shelf if the book was not there in the first place.
+   * @param {object} book - Book, whose category is to be updated
+   * @param {string} shelf - Category i.e. wantToRead, read, reading or none
+   */
+  updateShelf = (book, shelf) => {
+
+    // Set the loader if an update is triggerd.
+    this.setState ({
+      isLoading: true,
+    })
+
+    // bookToBeAdded and index are required to identify if a book to
+    // be updated in present in app's state and add to it if the answer is a no
+    let bookToBeAdded = {};
+    const index = this.state.books.findIndex(i => i.id === book.id)
+
+    if (index === -1) {
+      bookToBeAdded = {...book, shelf: shelf};
+    }
+
+    BooksAPI.update(book, shelf)
+      .then((book) => {
+        index === -1
+          ? this.addBookToShefl(bookToBeAdded, false)
+          : this.updateBookShelf(index, shelf, false)
+      })
+  }
+
+  /**
+   * @description Updates a book's category (state)
+   * @param {number} index - index of the book to be updated
+   * @param {string} shelf - category to be updated
+   * @param {boolean} isLoading - loader to be set
+   */
+  updateBookShelf = (index, shelf, isLoading) => {
+    this.setState((currState) => ({
+      books: [
+        ...currState.books.slice(0, index),
+        {...currState.books[index], shelf: shelf},
+        ...currState.books.slice(index+1)
+      ],
+      isLoading: isLoading,
+    }))
+  }
+
+  /**
+   * @description Adds book to the shelf (state).
+   * @param {object} book - Book to be updated
+   * @param {boolean} isLoading - status of loader to be set
+   */
+  addBookToShefl = (book, isLoading) => {
+    this.setState((currState) => ({
+      books: [
+          ...currState.books, book
+        ],
+      isLoading: isLoading,
+    }))
+  }
+
+  render() {
+
+    const { books, isLoading } = this.state
+    const error = books.error ? books.error : ''
+    return (
+      &lt;div className="app">
+        &lt;Route
+          exact
+          path='/'
+          render={() => (
+            &lt;div className="list-books">
+              &lt;div className="list-books-title">
+                &lt;h1>MyReads&lt;/h1>
+              &lt;/div>
+              &lt;LoadingOverlay
+                active={isLoading}
+                spinner={
+                  &lt;ClipLoader
+                    size={75}
+                    color={"FFFFFF"}
+                  />
+                }
+              >
+              &lt;div className="list-books-content">
+              {
+                error.trim() !== ''
+                  ? &lt;div>{error}&lt;/div>
+                  : books.length > 0
+                      ? &lt;div>
+                          {
+                            shelf.map((s, index) => (
+                              &lt;BookShelf
+                                shelf={s}
+                                key={index}
+                                books={books}
+                                updateShelf={this.updateShelf}
+                              />
+                            ))
+                          }
+                        &lt;/div>
+                      : &lt;div className="center-div">&lt;ClipLoader size={75} />&lt;/div>
+
+              }
+              &lt;/div>
+              &lt;Link
+                to="/search"
+                className="open-search"
+              />
+              &lt;/LoadingOverlay>
+            &lt;/div>
+          )}
+        />
+        &lt;Route
+          path="/search"
+          render={({ history }) => (
+            &lt;ListBooks
+              books={books}
+              updateShelf={(book, shelf) => {
+                this.updateShelf(book, shelf)
+                history.push("/")
+              }}
+            />
+          )}
+        />
+      &lt;/div>
+    )
+  }
+}
+
+export default BooksApp;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Books.html">Books</a></li><li><a href="BooksApp.html">BooksApp</a></li><li><a href="BookShelf.html">BookShelf</a></li><li><a href="ListBooks.html">ListBooks</a></li></ul><h3>Global</h3><ul><li><a href="global.html#book">book</a></li><li><a href="global.html#books">books</a></li><li><a href="global.html#shelf">shelf</a></li><li><a href="global.html#updateShelf">updateShelf</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.2</a> on Sun Jun 09 2019 03:45:10 GMT+0530 (India Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
