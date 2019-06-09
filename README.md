@@ -1,8 +1,6 @@
 # MyReads Project
 
-A bookshelf app that allow Users to select and categorize books they have **read**, are **currently reading**, or **want to read**.
-
-Of course, you are free to start this project from scratch if you wish! Just be sure to use [Create React App](https://github.com/facebookincubator/create-react-app) to bootstrap the project.
+A bookshelf app that allow users to _select_ and _categorize_ books they have **read**, are **currently reading**, or **want to read**.
 
 ## Getting Started
 
