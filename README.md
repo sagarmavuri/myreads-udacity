@@ -18,6 +18,10 @@ A bookshelf app that allow users to _select_ and _categorize_ books they have **
 
 ![Categorize books](https://github.com/sagarmavuri/myreads-udacity/blob/master/images/Categorize.gif)
 
+### Search
+
+![Search](https://github.com/sagarmavuri/myreads-udacity/blob/master/images/Search.gif)
+
 ## What You're Getting
 ```bash
 ├── CONTRIBUTING.md
