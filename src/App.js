@@ -9,7 +9,7 @@ import LoadingOverlay from 'react-loading-overlay'
 import { ClipLoader } from 'react-spinners'
 
 import { Link } from 'react-router-dom'
-import { Route } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 
 /**
  * const shelf - This doesn't change.
@@ -108,64 +108,66 @@ class BooksApp extends Component {
     const error = books.error ? books.error : ''
     return (
       <div className="app">
-        <Route
-          exact
-          path='/'
-          render={() => (
-            <div className="list-books">
-              <div className="list-books-title">
-                <h1>MyReads</h1>
-              </div>
-              <LoadingOverlay
-                active={isLoading}
-                spinner={
-                  <ClipLoader
-                    size={75}
-                    color={"FFFFFF"}
-                  />
-                }
-              >
-              <div className="list-books-content">
-              {
-                error.trim() !== ''
-                  ? <div>{error}</div>
-                  : books.length > 0
-                      ? <div>
-                          {
-                            shelf.map((s, index) => (
-                              <BookShelf
-                                shelf={s}
-                                key={index}
-                                books={books}
-                                updateShelf={this.updateShelf}
-                              />
-                            ))
-                          }
-                        </div>
-                      : <div className="center-div"><ClipLoader size={75} /></div>
+        <Switch>
+          <Route
+            exact
+            path='/'
+            render={() => (
+              <div className="list-books">
+                <div className="list-books-title">
+                  <h1>MyReads</h1>
+                </div>
+                <LoadingOverlay
+                  active={isLoading}
+                  spinner={
+                    <ClipLoader
+                      size={75}
+                      color={"FFFFFF"}
+                    />
+                  }
+                >
+                <div className="list-books-content">
+                {
+                  error.trim() !== ''
+                    ? <div>{error}</div>
+                    : books.length > 0
+                        ? <div>
+                            {
+                              shelf.map((s, index) => (
+                                <BookShelf
+                                  shelf={s}
+                                  key={index}
+                                  books={books}
+                                  updateShelf={this.updateShelf}
+                                />
+                              ))
+                            }
+                          </div>
+                        : <div className="center-div"><ClipLoader size={75} /></div>
 
-              }
+                }
+                </div>
+                <Link
+                  to="/search"
+                  className="open-search"
+                />
+                </LoadingOverlay>
               </div>
-              <Link
-                to="/search"
-                className="open-search"
+            )}
+          />
+          <Route
+            path="/search"
+            render={({ history }) => (
+              <ListBooks
+                books={books}
+                updateShelf={(book, shelf) => {
+                  this.updateShelf(book, shelf)
+                  history.push("/")
+                }}
               />
-              </LoadingOverlay>
-            </div>
-          )}
-        />
-        <Route
-          path="/search"
-          render={({ history }) => (
-            <ListBooks
-              books={books}
-              updateShelf={(book, shelf) => {
-                this.updateShelf(book, shelf)
-                history.push("/")
-              }}
-            />
-          )}
-        />
+            )}
+          />
+        </Switch>
       </div>
     )
   }

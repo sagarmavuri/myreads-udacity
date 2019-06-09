@@ -31,6 +31,7 @@ class ListBooks extends Component {
 	state = {
 		query: '',
 		isLoading: false,
+		disabled: false,
 	}
 
 	/**
@@ -45,6 +46,7 @@ class ListBooks extends Component {
 			this.setState({
 				query: query,
 				isLoading: true,
+				disabled: true,
 			})
 
 			// Turn off the loader and set filteredBooks
@@ -53,6 +55,7 @@ class ListBooks extends Component {
 					filteredBooks = books ? (books.error ? [] : books) : [];
 						this.setState(() => ({
 							isLoading: false,
+							disabled: false,
 						}))
 					}
 				)
@@ -67,7 +70,7 @@ class ListBooks extends Component {
 
 	render() {
 
-		const { query, isLoading } = this.state
+		const { query, isLoading, disabled } = this.state
 		const { books, updateShelf } = this.props
 
 		return (
@@ -91,6 +94,7 @@ class ListBooks extends Component {
 							type="text"
 							placeholder="Search by title or author"
 							value={query}
+							disabled={disabled}
 							onChange={(event) => this.fetchBooks(event.target.value)}
 						/>
 
