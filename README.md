@@ -1,11 +1,25 @@
-# MyReads Project
+# MyReads: A Book Lending App
 
-A bookshelf app that allow users to _select_ and _categorize_ books they have **read**, are **currently reading**, or **want to read**.
+A bookshelf app that allow users to _select_ and _categorize_ books they have **read**, are **currently reading**, or **want to read**. Here are the specifics.
+
+## What it does!
+
+It has two screens - 
+
+### Main Screen or Bookshelf
+
+* It displays all the books under their respective shelves namely, **Currently Reading**, **Want to Read** and **Read**.
+* User is allowed to change a book's shelf by clickin on the `arrow` button on bottom right part of every book.
+
+### Search Screen
+
+* User searches for books per query/input entered. This search is limited to specific terms, details of which are avialable in SEARCH_TERMS.md
+* Similar to Bookshelf screen, user can chagne and categorize a book into any of the available shelves mentoned above. Default is **None**.
 
 ## Getting Started
 
-* install all project dependencies with `npm install`
-* start the development server with `npm start`
+* Install all project dependencies with `npm install`
+* Start the development server with `npm start`
     * The app. will be rendered at `http://localhost:3000`
 
 ## Sneak peek
