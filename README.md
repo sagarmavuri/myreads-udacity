@@ -8,6 +8,7 @@ Of course, you are free to start this project from scratch if you wish! Just be 
 
 * install all project dependencies with `npm install`
 * start the development server with `npm start`
+    * The app. will be rendered at `http://localhost:3000`
 
 ## What You're Getting
 ```bash
