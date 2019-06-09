@@ -12,7 +12,7 @@ A bookshelf app that allow users to _select_ and _categorize_ books they have **
 
 ### Welcome page
 
-![Welcome page](https://github.com/sagarmavuri/myreads-udacity/blob/master/images/Bookshefl_starter.mov)
+![Welcome page](https://github.com/sagarmavuri/myreads-udacity/blob/master/images/Bookshefl_starter.gif)
 
 ### Currently reading
 
