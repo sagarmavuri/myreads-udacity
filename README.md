@@ -14,17 +14,6 @@ A bookshelf app that allow users to _select_ and _categorize_ books they have **
 
 ![Welcome page](https://github.com/sagarmavuri/myreads-udacity/blob/master/images/WelcomePage.gif)
 
-### Currently reading
-
-![currentlyReading](https://github.com/sagarmavuri/myreads-udacity/blob/master/images/Screen%20Shot%202019-06-10%20at%203.27.42%20AM.png)
-
-### Want to Read
-
-![wantToRead](https://github.com/sagarmavuri/myreads-udacity/blob/master/images/Screen%20Shot%202019-06-10%20at%203.29.04%20AM.png)
-
-### Read
-
-![read](https://github.com/sagarmavuri/myreads-udacity/blob/master/images/Screen%20Shot%202019-06-10%20at%203.29.16%20AM.png)
 
 ## What You're Getting
 ```bash
