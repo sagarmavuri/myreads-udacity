@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import * as BooksAPI from './BooksAPI'
-
-import Books from './Books.js'
+import { debounce } from 'lodash'
 import { Link } from 'react-router-dom'
 import { ClipLoader } from 'react-spinners'
+
+import * as BooksAPI from './BooksAPI'
+import Books from './Books.js'
+
 
 // TODO - any better way?
 let filteredBooks = [];
@@ -31,14 +33,15 @@ class ListBooks extends Component {
 	state = {
 		query: '',
 		isLoading: false,
-		disabled: false,
 	}
 
 	/**
-	 * @description It fetches/searches for the books per input query
+	 * @description It fetches/searches for the books per input query. 
+	 * 		It has debounce, triggers the events 2 seconds after 
+	 *		User finisihes typing
 	 * @param {string} query - Input string against which the search will be made
 	 */
-	fetchBooks = (query) => {
+	fetchBooks = debounce ((query) => {
 
 		// Search only if query is a non empty string
 		if (query.trim() !== '') {
@@ -46,7 +49,6 @@ class ListBooks extends Component {
 			this.setState({
 				query: query,
 				isLoading: true,
-				disabled: true,
 			})
 
 			// Turn off the loader and set filteredBooks
@@ -55,7 +57,6 @@ class ListBooks extends Component {
 					filteredBooks = books ? (books.error ? [] : books) : [];
 						this.setState(() => ({
 							isLoading: false,
-							disabled: false,
 						}))
 					}
 				)
@@ -66,11 +67,11 @@ class ListBooks extends Component {
 					isLoading: false,
 				})
 		}
-	}
+	}, 2000)
 
 	render() {
 
-		const { query, isLoading, disabled } = this.state
+		const { isLoading } = this.state
 		const { books, updateShelf } = this.props
 
 		return (
@@ -93,8 +94,6 @@ class ListBooks extends Component {
 						<input
 							type="text"
 							placeholder="Search by title or author"
-							value={query}
-							disabled={disabled}
 							onChange={(event) => this.fetchBooks(event.target.value)}
 						/>
 
