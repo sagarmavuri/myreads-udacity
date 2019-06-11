@@ -157,12 +157,11 @@ class BooksApp extends Component {
           />
           <Route
             path="/search"
-            render={({ history }) => (
+            render={() => (
               <ListBooks
                 books={books}
                 updateShelf={(book, shelf) => {
                   this.updateShelf(book, shelf)
-                  history.push("/")
                 }}
               />
             )}
